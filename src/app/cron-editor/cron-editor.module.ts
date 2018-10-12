@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common';
 
 import { CronGenComponent } from './cron-editor.component';
 import { TimePickerComponent } from './cron-time-picker.component';
-import { MatTabsModule, MatSelectModule, MatOptionModule, MatFormFieldModule } from "@angular/material";
+import { MatTabsModule, MatSelectModule, MatOptionModule, MatFormFieldModule, MatRadioModule, MatCheckboxModule } from "@angular/material";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, MatTabsModule, MatSelectModule, MatOptionModule, MatFormFieldModule, BrowserAnimationsModule],
+    imports: [CommonModule, FormsModule, MatTabsModule, MatSelectModule, MatOptionModule, MatFormFieldModule, MatRadioModule, MatCheckboxModule, BrowserAnimationsModule],
     exports: [CronGenComponent, TimePickerComponent],
     declarations: [CronGenComponent, TimePickerComponent]
 })

@@ -113,7 +113,6 @@ export class CronGenComponent implements OnInit, OnChanges {
         }
         this.regenerateCron();
     }
-
     public regenerateCron() {
         this.isDirty = true;
 
