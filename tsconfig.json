@@ -9,9 +9,15 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "lib": ["es6", "dom"],
-    "types": ["node"],
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "types": [
+      "node"
+    ],
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "module": "es2015"
   }
 }

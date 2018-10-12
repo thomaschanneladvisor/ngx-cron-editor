@@ -6,7 +6,7 @@ A library that helps the user graphically build a CRON expression using Angular 
 
 **The main additions of this fork are support for standard Linux cron expressions (with reduced functionallity given the restrictions of the original format). Also the component was upgraded to support Bootstrap 4+ and Angular 5+.**
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.1. To run the sample app just run `npm run start` and go to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.1. To run the sample app just run `npm run start` and go to `http://localhost:4444/`. The app will automatically reload if you change any of the source files.
 
 ## Demo
 
