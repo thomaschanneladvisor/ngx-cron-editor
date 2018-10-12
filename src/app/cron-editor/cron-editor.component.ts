@@ -2,6 +2,7 @@ import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, EventEmitte
 
 import { CronOptions } from "./CronOptions";
 import { Days, MonthWeeks, Months } from "./enums";
+import { MatTabChangeEvent } from "@angular/material";
 
 @Component({
     selector: "cron-editor",
@@ -28,16 +29,18 @@ export class CronGenComponent implements OnInit, OnChanges {
     private localCron: string;
     private isDirty: boolean;
 
-    get isCronFlavorQuartz(){return this.options.cronFlavor === 'quartz';}
-    get isCronFlavorStandard(){return this.options.cronFlavor === 'standard';}
+    get isCronFlavorQuartz() { return this.options.cronFlavor === 'quartz'; }
+    get isCronFlavorStandard() { return this.options.cronFlavor === 'standard'; }
 
-    get yearDefaultChar(){return this.options.cronFlavor === 'quartz' ? "*" : "";}
-    get weekDayDefaultChar(){return this.options.cronFlavor === 'quartz' ? "?" : "*";}
-    get monthDayDefaultChar(){return this.options.cronFlavor === 'quartz' ? "?" : "*";}
+    get yearDefaultChar() { return this.options.cronFlavor === 'quartz' ? "*" : ""; }
+    get weekDayDefaultChar() { return this.options.cronFlavor === 'quartz' ? "?" : "*"; }
+    get monthDayDefaultChar() { return this.options.cronFlavor === 'quartz' ? "?" : "*"; }
 
     public async ngOnInit() {
-        this.state = this.getDefaultState(); 
+        this.activeTab = "minutes";
+        this.state = this.getDefaultState();
 
+        this.regenerateCron();
         this.handleModelChange(this.cron);
     }
 
@@ -78,6 +81,37 @@ export class CronGenComponent implements OnInit, OnChanges {
         } else {
             return `${month}${this.getOrdinalSuffix(month)} day`;
         }
+    }
+
+    public tabChanged(tabChangeEvent: MatTabChangeEvent) {
+        //console.log('tabChanged: ', tabChangeEvent);
+        switch (tabChangeEvent.index) {
+            case 0:
+                this.activeTab = "minutes";
+                break;
+            case 1:
+                this.activeTab = "hourly";
+                break;
+            case 2:
+                this.activeTab = "daily";
+                break;
+            case 3:
+                this.activeTab = "weekly";
+                break;
+            case 4:
+                this.activeTab = "monthly";
+                break;
+            case 5:
+                this.activeTab = "yearly";
+                break;
+            case 6:
+                this.activeTab = "advanced";
+                break;
+            default:
+                this.activeTab = '';
+                break;
+        }
+        this.regenerateCron();
     }
 
     public regenerateCron() {
@@ -172,7 +206,7 @@ export class CronGenComponent implements OnInit, OnChanges {
                 throw "Invalid cron expression, there must be 5 segments";
         }
 
-        var origCron : string = cron;
+        var origCron: string = cron;
         if (cron.split(" ").length === 5 && this.isCronFlavorStandard)
             cron = `0 ${cron} *`;
 
