@@ -2,7 +2,7 @@
 
 @Component({
     selector: "cron-time-picker",
-    templateUrl: "./cron-time-picker.template.html"  
+    templateUrl: "./cron-time-picker.template.html"
 })
 export class TimePickerComponent implements OnInit {
     @Output() public onChange = new EventEmitter();
@@ -23,6 +23,11 @@ export class TimePickerComponent implements OnInit {
         this.minutes = this.range(0, 59);
         this.seconds = this.range(0, 59);
         this.hourTypes = ["AM", "PM"];
+    }
+
+    changeEmit() {
+        console.log('changeEmit');
+        this.onChange.emit();
     }
 
     private range(start: number, end: number): number[] {

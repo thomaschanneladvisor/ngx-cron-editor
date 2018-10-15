@@ -88,7 +88,7 @@
           </mat-radio-group>
           Every working day at
           <cron-time-picker [disabled]="disabled || activeTab !== 'daily' || state.daily.subTab !== 'everyWeekDay'"
-            (change)="regenerateCron()" [(model)]="state.daily.everyWeekDay" [selectClass]="options.formSelectClass"
+            (onChange)="regenerateCron()" [(model)]="state.daily.everyWeekDay" [selectClass]="options.formSelectClass"
             [use24HourTime]="options.use24HourTime" [hideSeconds]="options.hideSeconds || !isCronFlavorQuartz">
           </cron-time-picker>
         </div>
@@ -128,7 +128,7 @@
           <div class="row">
             <div class="col-sm-6">
               at
-              <cron-time-picker [disabled]="disabled || activeTab !== 'weekly'" (change)="regenerateCron()" [(model)]="state.weekly"
+              <cron-time-picker [disabled]="disabled || activeTab !== 'weekly'" (onChange)="regenerateCron()" [(model)]="state.weekly"
                 [selectClass]="options.formSelectClass" [use24HourTime]="options.use24HourTime" [hideSeconds]="options.hideSeconds|| !isCronFlavorQuartz">
               </cron-time-picker>
             </div>
@@ -174,7 +174,7 @@
 
           month(s) at
           <cron-time-picker [disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificDay'"
-            (change)="regenerateCron()" [(model)]="state.monthly.specificDay" [selectClass]="options.formSelectClass"
+            (onChange)="regenerateCron()" [(model)]="state.monthly.specificDay" [selectClass]="options.formSelectClass"
             [use24HourTime]="options.use24HourTime" [hideSeconds]="options.hideSeconds || !isCronFlavorQuartz">
           </cron-time-picker>
         </div>
@@ -212,7 +212,7 @@
           </mat-form-field>
           month(s) at
           <cron-time-picker [disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificWeekDay'"
-            (change)="regenerateCron()" [(model)]="state.monthly.specificWeekDay" [selectClass]="options.formSelectClass"
+            (onChange)="regenerateCron()" [(model)]="state.monthly.specificWeekDay" [selectClass]="options.formSelectClass"
             [use24HourTime]="options.use24HourTime" [hideSeconds]="options.hideSeconds || !isCronFlavorQuartz">
           </cron-time-picker>
         </div>
@@ -252,7 +252,7 @@
           </mat-form-field>
           at
           <cron-time-picker [disabled]="disabled || activeTab !== 'yearly' || state.yearly.subTab !== 'specificMonthDay'"
-            (change)="regenerateCron()" [(model)]="state.yearly.specificMonthDay" [selectClass]="options.formSelectClass"
+            (onChange)="regenerateCron()" [(model)]="state.yearly.specificMonthDay" [selectClass]="options.formSelectClass"
             [use24HourTime]="options.use24HourTime" [hideSeconds]="options.hideSeconds || !isCronFlavorQuartz">
           </cron-time-picker>
         </div>
@@ -290,7 +290,7 @@
           </mat-form-field>
           at
           <cron-time-picker [disabled]="disabled || activeTab !== 'yearly' || state.yearly.subTab !== 'specificMonthWeek'"
-            (change)="regenerateCron()" [(model)]="state.yearly.specificMonthWeek" [selectClass]="options.formSelectClass"
+            (onChange)="regenerateCron()" [(model)]="state.yearly.specificMonthWeek" [selectClass]="options.formSelectClass"
             [use24HourTime]="options.use24HourTime" [hideSeconds]="options.hideSeconds || !isCronFlavorQuartz">
           </cron-time-picker>
         </div>
