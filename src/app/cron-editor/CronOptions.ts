@@ -1,23 +1,25 @@
+import {CronFlavor} from './enums';
+
 export interface CronOptions {
-    formInputClass: string;
-    formSelectClass: string;
-    formRadioClass: string;
-    formCheckboxClass: string;
+  formInputClass: string;
+  formSelectClass: string;
+  formRadioClass: string;
+  formCheckboxClass: string;
 
-    defaultTime: string,
+  defaultTime: string,
 
-    hideMinutesTab: boolean;
-    hideHourlyTab: boolean;
-    hideDailyTab: boolean;
-    hideWeeklyTab: boolean;
-    hideMonthlyTab: boolean;
-    hideYearlyTab: boolean;
-    hideAdvancedTab: boolean;
-    hideSpecificWeekDayTab : boolean;
-    hideSpecificMonthWeekTab: boolean;
+  hideMinutesTab: boolean;
+  hideHourlyTab: boolean;
+  hideDailyTab: boolean;
+  hideWeeklyTab: boolean;
+  hideMonthlyTab: boolean;
+  hideYearlyTab: boolean;
+  hideAdvancedTab: boolean;
+  hideSpecificWeekDayTab: boolean;
+  hideSpecificMonthWeekTab: boolean;
 
-    use24HourTime: boolean;
-    hideSeconds: boolean;
+  use24HourTime: boolean;
+  hideSeconds: boolean;
 
-    cronFlavor: string;
+  cronFlavor: CronFlavor;
 }

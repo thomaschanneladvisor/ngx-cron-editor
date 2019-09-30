@@ -2,8 +2,8 @@
 
   <div class="card-header">
     <!-- Tabs -->
-    <mat-tab-group (selectedTabChange)="tabChanged($event)">
-      <mat-tab label="Minutes">
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+      <mat-tab label="Minutes" *ngIf="!options.hideMinutesTab">
         <div class="">
           Every
           <mat-form-field>
@@ -25,7 +25,7 @@
           </mat-form-field>
         </div>
       </mat-tab>
-      <mat-tab label="Hourly">
+      <mat-tab label="Hourly" *ngIf="!options.hideHourlyTab">
         <div class="">
           Every
           <mat-form-field>
@@ -55,7 +55,7 @@
           </mat-form-field>
         </div>
       </mat-tab>
-      <mat-tab label="Daily">
+      <mat-tab label="Daily" *ngIf="!options.hideDailyTab">
         <div class="form-group">
           <mat-radio-group [(ngModel)]="state.daily.subTab">
             <mat-radio-button name="daily-radio" value="everyDays" [disabled]="disabled" (change)="regenerateCron()"
@@ -93,7 +93,7 @@
           </cron-time-picker>
         </div>
       </mat-tab>
-      <mat-tab label="Weekly">
+      <mat-tab label="Weekly" *ngIf="!options.hideWeeklyTab">
         <div class="form-group">
           <div class="row">
             <div class="col-sm-6">
@@ -136,7 +136,7 @@
         </div>
 
       </mat-tab>
-      <mat-tab label="Monthly">
+      <mat-tab label="Monthly" *ngIf="!options.hideMonthlyTab">
         <div class="form-group">
           <mat-radio-group [(ngModel)]="state.monthly.subTab">
             <mat-radio-button name="monthly-radio" value="specificDay" [disabled]="disabled" (change)="regenerateCron()"
@@ -144,7 +144,7 @@
             </mat-radio-button>
           </mat-radio-group>
           On the
-          <mat-form-field *ngIf="options.cronFlavor == 'quartz'">
+          <mat-form-field *ngIf="isCronFlavorQuartz">
             <mat-select class="month-days" [disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificDay'"
               (selectionChange)="regenerateCron()" [(ngModel)]="state.monthly.specificDay.day" [ngClass]="options.formSelectClass">
               <mat-option *ngFor="let monthDaysWithLast of selectOptions.monthDaysWithLasts" [value]="monthDaysWithLast">
@@ -153,7 +153,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="options.cronFlavor == 'standard'">
+          <mat-form-field *ngIf="isCronFlavorStandard">
             <mat-select class="month-days" [disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificDay'"
               (selectionChange)="regenerateCron()" [(ngModel)]="state.monthly.specificDay.day" [ngClass]="options.formSelectClass">
               <mat-option *ngFor="let monthDaysWithOutLast of selectOptions.monthDaysWithOutLasts" [value]="monthDaysWithOutLast">
@@ -217,7 +217,7 @@
           </cron-time-picker>
         </div>
       </mat-tab>
-      <mat-tab label="Yearly">
+      <mat-tab label="Yearly" *ngIf="!options.hideYearlyTab">
         <div class="form-group">
           <mat-radio-group [(ngModel)]="state.yearly.subTab">
             <mat-radio-button name="yearly-radio" value="specificMonthDay" [disabled]="disabled" (change)="regenerateCron()"
@@ -234,7 +234,7 @@
             </mat-select>
           </mat-form-field>
           on the
-          <mat-form-field *ngIf="options.cronFlavor == 'quartz'" class="month-days">
+          <mat-form-field *ngIf="isCronFlavorQuartz" class="month-days">
             <mat-select [disabled]="disabled || activeTab !== 'yearly' || state.yearly.subTab !== 'specificMonthDay'"
               (selectionChange)="regenerateCron()" [(ngModel)]="state.yearly.specificMonthDay.day" [ngClass]="options.formSelectClass">
               <mat-option *ngFor="let monthDaysWithLast of selectOptions.monthDaysWithLasts" [value]="monthDaysWithLast">
@@ -242,7 +242,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field *ngIf="options.cronFlavor == 'standard'">
+          <mat-form-field *ngIf="isCronFlavorStandard">
             <mat-select class="month-days" [disabled]="disabled || activeTab !== 'yearly' || state.yearly.subTab !== 'specificMonthDay'"
               (selectionChange)="regenerateCron()" [(ngModel)]="state.yearly.specificMonthDay.day" [ngClass]="options.formSelectClass">
               <mat-option *ngFor="let monthDaysWithOutLast of selectOptions.monthDaysWithOutLasts" [value]="monthDaysWithOutLast">
@@ -295,7 +295,7 @@
           </cron-time-picker>
         </div>
       </mat-tab>
-      <mat-tab label="Advanced">
+      <mat-tab label="Advanced" *ngIf="!options.hideAdvancedTab">
         Cron Expression
         <mat-form-field>
           <input matInput type="text" class="advanced-cron-editor-input" ng-disabled="disabled || activeTab !== 'advanced'"
@@ -303,92 +303,5 @@
         </mat-form-field>
       </mat-tab>
     </mat-tab-group>
-
-    <!-- <ul class="nav nav-tabs card-header-tabs tab-nav" role="tablist">
-      <li class="nav-item" *ngIf="!options.hideMinutesTab">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'minutes'}" aria-controls="minutes" role="tab"
-          data-toggle="tab" (click)="setActiveTab('minutes', $event)">
-          Minutes
-        </a>
-      </li>
-
-      <li class="nav-item" role="presentation" *ngIf="!options.hideHourlyTab">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'hourly'}" aria-controls="hourly" role="tab"
-          data-toggle="tab" (click)="setActiveTab('hourly', $event)">
-          Hourly
-        </a>
-      </li>
-
-      <li class="nav-item" role="presentation" *ngIf="!options.hideDailyTab">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'daily'}" aria-controls="daily" role="tab" data-toggle="tab"
-          (click)="setActiveTab('daily', $event)">
-          Daily
-        </a>
-      </li>
-
-      <li class="nav-item" role="presentation" *ngIf="!options.hideWeeklyTab">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'weekly'}" aria-controls="weekly" role="tab"
-          data-toggle="tab" (click)="setActiveTab('weekly', $event)">
-          Weekly
-        </a>
-      </li>
-
-      <li class="nav-item" role="presentation" *ngIf="!options.hideMonthlyTab">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'monthly'}" aria-controls="monthly" role="tab"
-          data-toggle="tab" (click)="setActiveTab('monthly', $event)">
-          Monthly
-        </a>
-      </li>
-
-      <li class="nav-item" role="presentation" *ngIf="!options.hideYearlyTab">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'yearly'}" aria-controls="yearly" role="tab"
-          data-toggle="tab" (click)="setActiveTab('yearly', $event)">
-          Yearly
-        </a>
-      </li>
-
-      <li class="nav-item" role="presentation" *ngIf="!options.hideAdvancedTab">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'advanced'}" aria-controls="advanced" role="tab"
-          data-toggle="tab" (click)="setActiveTab('advanced', $event)">
-          Advanced
-        </a>
-      </li>
-    </ul> -->
   </div>
-
-  <!-- Tab content -->
-  <!-- <div class="card-body cron-editor-container">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="tab-content">
-          <div class="tab-pane" *ngIf="!options.hideMinutesTab" [ngClass]="{'active': activeTab === 'minutes'}">
-
-          </div>
-
-          <div class="tab-pane" *ngIf="!options.hideHourlyTab" [ngClass]="{'active': activeTab === 'hourly'}">
-
-          </div>
-          <div class="tab-pane" *ngIf="!options.hideDailyTab" [ngClass]="{'active': activeTab === 'daily'}">
-
-          </div>
-
-          <div class="tab-pane" *ngIf="!options.hideWeeklyTab" [ngClass]="{'active': activeTab === 'weekly'}">
-
-          </div>
-
-          <div class="tab-pane" *ngIf="!options.hideMonthlyTab" [ngClass]="{'active': activeTab === 'monthly'}">
-
-          </div>
-
-          <div class="tab-pane" *ngIf="!options.hideYearlyTab" [ngClass]="{'active': activeTab === 'yearly'}">
-
-          </div>
-
-          <div class="tab-pane" *ngIf="!options.hideAdvancedTab" [ngClass]="{'active': activeTab === 'advanced'}">
-           
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
 </div>

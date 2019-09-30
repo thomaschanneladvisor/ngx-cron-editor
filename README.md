@@ -1,12 +1,17 @@
-cron-editor
+Angular Material Design Cron Editor
 ===
-FORK: AngularMaterial
 
-A library that helps the user graphically build a CRON expression using Angular 2+. It is a fork of the  vincentjames501's [angular-cron-gen](https://github.com/vincentjames501/angular-cron-gen) for AngularJS 1.5+ and claudiuconstantin's [cron-editor(https://github.com/claudiuconstantin/cron-editor)]. 
+A library that helps the user graphically build a CRON expression using Angular 8+. 
 
-**The main additions of this fork are support for standard Linux cron expressions (with reduced functionallity given the restrictions of the original format). Also the component was upgraded to support Angular Material and Angular 6+.**
+This library has a long history. It is a fork of the  vincentjames501's [angular-cron-gen](https://github.com/vincentjames501/angular-cron-gen) 
+for AngularJS 1.5+ and claudiuconstantin's [cron-editor(https://github.com/claudiuconstantin/cron-editor)] to create an Angular 8+, Material design
+editor.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.1. To run the sample app just run `npm run start` and go to `http://localhost:4444/`. The app will automatically reload if you change any of the source files.
+![screenshot](docs/screenshot.png)
+
+To run the sample app just run `npm run start` and go to `http://localhost:4444/`. The app will automatically reload if you change any of the source files.
+
+This library is published to NPM: `@zapinfo/ngx-cron-editor`
 
 ## Demo
 
@@ -16,13 +21,13 @@ A work-in-progress demo can be found [here](https://esarmientoe.github.io/cron-e
 
 1. Install the npm package:
     ```
-    $ npm i cron-editor -S
+    $ npm i ngx-cron-editor -S
     ```
 
 2. Import the module in your own module:
 
     ```ts
-    import { CronEditorModule } from "cron-editor";
+    import { CronEditorModule } from '@zapinfo/ngx-cron-editor';
 
     @NgModule({
         imports: [..., CronEditorModule],
@@ -47,7 +52,7 @@ A work-in-progress demo can be found [here](https://esarmientoe.github.io/cron-e
 ```
 
 ```ts
-import { CronOptions } from "cron-editor/cron-editor";
+import { CronOptions } from "@zapinfo/ngx-cron-editor";
 
 @Component({
     ...
@@ -74,10 +79,11 @@ export class MyComponent {
        use24HourTime: true,
        hideSeconds: false,
 
-       cronFlavor: "quartz" //standard or quartz
+       cronFlavor: CronFlavor.quartz
     };
 }
 ```
 
 ## License:
+
 Licensed under the MIT license

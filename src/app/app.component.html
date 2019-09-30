@@ -1,5 +1,5 @@
 <div style="text-align:center">
-  <h1>Angular 2+ Cron expression editor</h1>
+  <h1>Angular 8+ Cron expression editor</h1>
 </div>
 
 <div class="row">
@@ -9,17 +9,19 @@
       <div class="card-header text-white bg-dark mb-3 form-group form-inline">
         <label class="col-form-label">Select your cron flavor:&nbsp;
           <select class="form-control" (change)="cronFlavorChange()" [(ngModel)]="cronOptions.cronFlavor">
-            <option [ngValue]="'quartz'">
-              quartz
-            </option>
-            <option [ngValue]="'standard'">
-              standard
+            <option [ngValue]="cronFlavorValues[flavor]" *ngFor="let flavor of cronFlavorKeys">
+              {{ flavor }}
             </option>
           </select>
         </label>
       </div>
       <div class="card-body">
-        <cron-editor #cronEditorDemo [(cron)]="cronExpression" [disabled]="isCronDisabled" [(options)]="cronOptions">Cron here...</cron-editor>
+        <cron-editor
+            #cronEditorDemo
+            [(cron)]="cronExpression"
+            [disabled]="isCronDisabled"
+            [options]="cronOptions"
+        >Cron here...</cron-editor>
       </div>
       <div class="card-footer text-center">
         <div class="alert alert-info">
