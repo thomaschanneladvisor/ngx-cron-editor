@@ -11,7 +11,7 @@ editor.
 
 To run the sample app just run `npm run start` and go to `http://localhost:4444/`. The app will automatically reload if you change any of the source files.
 
-This library is published to NPM: `@zapinfo/ngx-cron-editor`
+This library is published to NPM and Github as: `@zapinfo/ngx-cron-editor`
 
 ## Demo
 
@@ -21,7 +21,7 @@ A work-in-progress demo can be found [here](https://esarmientoe.github.io/cron-e
 
 1. Install the npm package:
     ```
-    $ npm i ngx-cron-editor -S
+    $ npm i @zapinfo/ngx-cron-editor -S
     ```
 
 2. Import the module in your own module:
@@ -82,6 +82,22 @@ export class MyComponent {
        cronFlavor: CronFlavor.quartz
     };
 }
+```
+
+## ZAPinfo Developer Notes
+
+Internally, we use github for package management.
+
+To pubish, [first login](https://help.github.com/en/articles/configuring-npm-for-use-with-github-package-registry#authenticating-to-github-package-registry) (requires personal access token):
+
+```
+npm login --registry=https://npm.pkg.github.com/
+```
+
+Then publish the package:
+
+```
+npm publish
 ```
 
 ## License:
