@@ -165,20 +165,77 @@ export class CronGenComponent implements OnInit, OnChanges {
   public regenerateCron() {
     this.isDirty = true;
 
+    // This is constructed in reverse order from standard:
+    // cron_parts[0] = year (quartz -- blank otherwise)
+    // cron_parts[1] = day of week
+    // cron_parts[2] = month
+    // cron_parts[3] = day of month
+    // cron_parts[4] = hour
+    // cron_parts[5] = minute
+    // cron_parts[6] = second (quartz)
+    let cron_parts: string[] = [];
+
     switch (this.activeTab) {
       case 'minutes':
-        this.cron = `${this.isCronFlavorQuartz ? this.state.minutes.seconds : ''} 0/${this.state.minutes.minutes} * 1/1 * ${this.weekDayDefaultChar} ${this.yearDefaultChar}`.trim();
+        cron_parts = [
+          this.yearDefaultChar,
+          this.weekDayDefaultChar,
+          '*',
+          '1/1',
+          `0/${this.state.minutes.minutes}`
+        ];
+
+        if (this.isCronFlavorQuartz) {
+          cron_parts.push(this.state.minutes.seconds);
+        }
+
         break;
       case 'hourly':
-        this.cron = `${this.isCronFlavorQuartz ? this.state.hourly.seconds : ''} ${this.state.hourly.minutes} 0/${this.state.hourly.hours} 1/1 * ${this.weekDayDefaultChar} ${this.yearDefaultChar}`.trim();
+        cron_parts = [
+          this.yearDefaultChar,
+          this.weekDayDefaultChar,
+          '*',
+          '1/1',
+          `0/${this.state.hourly.hours}`,
+          this.state.hourly.minutes
+        ];
+
+        if (this.isCronFlavorQuartz) {
+          cron_parts.push(this.state.hourly.seconds);
+        }
+
         break;
       case 'daily':
         switch (this.state.daily.subTab) {
           case 'everyDays':
-            this.cron = `${this.isCronFlavorQuartz ? this.state.daily.everyDays.seconds : ''} ${this.state.daily.everyDays.minutes} ${this.hourToCron(this.state.daily.everyDays.hours, this.state.daily.everyDays.hourType)} 1/${this.state.daily.everyDays.days} * ${this.weekDayDefaultChar} ${this.yearDefaultChar}`.trim();
+            cron_parts = [
+              this.yearDefaultChar,
+              this.weekDayDefaultChar,
+              '*',
+              `1/${this.state.daily.everyDays.days}`,
+              this.hourToCron(this.state.daily.everyDays.hours, this.state.daily.everyDays.hourType),
+              this.state.daily.everyDays.minutes
+            ];
+
+            if (this.isCronFlavorQuartz) {
+              cron_parts.push(this.state.daily.everyDays.seconds);
+            }
+
             break;
           case 'everyWeekDay':
-            this.cron = `${this.isCronFlavorQuartz ? this.state.daily.everyWeekDay.seconds : ''} ${this.state.daily.everyWeekDay.minutes} ${this.hourToCron(this.state.daily.everyWeekDay.hours, this.state.daily.everyWeekDay.hourType)} ${this.monthDayDefaultChar} * MON-FRI ${this.yearDefaultChar}`.trim();
+            cron_parts = [
+              this.yearDefaultChar,
+              'MON-FRI',
+              '*',
+              this.monthDayDefaultChar,
+              this.hourToCron(this.state.daily.everyWeekDay.hours, this.state.daily.everyWeekDay.hourType),
+              this.state.daily.everyWeekDay.minutes
+            ];
+
+            if (this.isCronFlavorQuartz) {
+              cron_parts.push(this.state.daily.everyWeekDay.seconds);
+            }
+
             break;
           default:
             throw 'Invalid cron daily subtab selection';
@@ -188,15 +245,51 @@ export class CronGenComponent implements OnInit, OnChanges {
         const days = this.selectOptions.days
           .reduce((acc, day) => this.state.weekly[day] ? acc.concat([day]) : acc, [])
           .join(',');
-        this.cron = `${this.isCronFlavorQuartz ? this.state.weekly.seconds : ''} ${this.state.weekly.minutes} ${this.hourToCron(this.state.weekly.hours, this.state.weekly.hourType)} ${this.monthDayDefaultChar} * ${days} ${this.yearDefaultChar}`.trim();
+
+        cron_parts = [
+          this.yearDefaultChar,
+          days,
+          '*',
+          this.monthDayDefaultChar,
+          this.hourToCron(this.state.weekly.hours, this.state.weekly.hourType),
+          this.state.weekly.minutes,
+        ];
+
+        if (this.isCronFlavorQuartz) {
+          cron_parts.push(this.state.weekly.seconds);
+        }
+
         break;
       case 'monthly':
         switch (this.state.monthly.subTab) {
           case 'specificDay':
-            this.cron = `${this.isCronFlavorQuartz ? this.state.monthly.specificDay.seconds : ''} ${this.state.monthly.specificDay.minutes} ${this.hourToCron(this.state.monthly.specificDay.hours, this.state.monthly.specificDay.hourType)} ${this.state.monthly.specificDay.day} 1/${this.state.monthly.specificDay.months} ${this.weekDayDefaultChar} ${this.yearDefaultChar}`.trim();
+            cron_parts = [
+              this.yearDefaultChar,
+              this.weekDayDefaultChar,
+              `1/${this.state.monthly.specificDay.months}`,
+              this.state.monthly.specificDay.day,
+              this.hourToCron(this.state.monthly.specificDay.hours, this.state.monthly.specificDay.hourType),
+              this.state.monthly.specificDay.minutes
+            ];
+
+            if (this.isCronFlavorQuartz) {
+              cron_parts.push(this.state.monthly.specificDay.seconds);
+            }
+
             break;
           case 'specificWeekDay':
-            this.cron = `${this.isCronFlavorQuartz ? this.state.monthly.specificWeekDay.seconds : ''} ${this.state.monthly.specificWeekDay.minutes} ${this.hourToCron(this.state.monthly.specificWeekDay.hours, this.state.monthly.specificWeekDay.hourType)} ${this.monthDayDefaultChar} 1/${this.state.monthly.specificWeekDay.months} ${this.state.monthly.specificWeekDay.day}${this.state.monthly.specificWeekDay.monthWeek} ${this.yearDefaultChar}`.trim();
+            cron_parts = [
+              this.yearDefaultChar,
+              `${this.state.monthly.specificWeekDay.day}${this.state.monthly.specificWeekDay.monthWeek}`,
+              `1/${this.state.monthly.specificWeekDay.months}`,
+              this.monthDayDefaultChar,
+              this.hourToCron(this.state.monthly.specificWeekDay.hours, this.state.monthly.specificWeekDay.hourType),
+              this.state.monthly.specificWeekDay.minutes
+            ];
+
+            if (this.isCronFlavorQuartz) {
+              cron_parts.push(this.state.monthly.specificWeekDay.seconds);
+            }
             break;
           default:
             throw 'Invalid cron monthly subtab selection';
@@ -205,10 +298,35 @@ export class CronGenComponent implements OnInit, OnChanges {
       case 'yearly':
         switch (this.state.yearly.subTab) {
           case 'specificMonthDay':
-            this.cron = `${this.isCronFlavorQuartz ? this.state.yearly.specificMonthDay.seconds : ''} ${this.state.yearly.specificMonthDay.minutes} ${this.hourToCron(this.state.yearly.specificMonthDay.hours, this.state.yearly.specificMonthDay.hourType)} ${this.state.yearly.specificMonthDay.day} ${this.state.yearly.specificMonthDay.month} ${this.weekDayDefaultChar} ${this.yearDefaultChar}`.trim();
+            cron_parts = [
+              this.yearDefaultChar,
+              this.weekDayDefaultChar,
+              this.state.yearly.specificMonthDay.month,
+              this.state.yearly.specificMonthDay.day,
+              this.hourToCron(this.state.yearly.specificMonthDay.hours, this.state.yearly.specificMonthDay.hourType),
+              this.state.yearly.specificMonthDay.minutes
+            ];
+
+            if (this.isCronFlavorQuartz) {
+              cron_parts.push(this.state.yearly.specificMonthDay.seconds);
+            }
+
             break;
           case 'specificMonthWeek':
-            this.cron = `${this.isCronFlavorQuartz ? this.state.yearly.specificMonthWeek.seconds : ''} ${this.state.yearly.specificMonthWeek.minutes} ${this.hourToCron(this.state.yearly.specificMonthWeek.hours, this.state.yearly.specificMonthWeek.hourType)} ${this.monthDayDefaultChar} ${this.state.yearly.specificMonthWeek.month} ${this.state.yearly.specificMonthWeek.day}${this.state.yearly.specificMonthWeek.monthWeek} ${this.yearDefaultChar}`.trim();
+            cron_parts = [
+              this.yearDefaultChar,
+              this.state.yearly.specificMonthWeek.monthWeek,
+              this.state.yearly.specificMonthWeek.day,
+              this.state.yearly.specificMonthWeek.month,
+              this.monthDayDefaultChar,
+              this.hourToCron(this.state.yearly.specificMonthWeek.hours, this.state.yearly.specificMonthWeek.hourType),
+              this.state.yearly.specificMonthWeek.minutes,
+            ];
+
+            if (this.isCronFlavorQuartz) {
+              cron_parts.push(this.state.yearly.specificMonthWeek.seconds);
+            }
+
             break;
           default:
             throw 'Invalid cron yearly subtab selection';
@@ -220,6 +338,29 @@ export class CronGenComponent implements OnInit, OnChanges {
       default:
         throw 'Invalid cron active tab selection';
     }
+
+    // Normalize irrelivant /'s
+    // https://serverfault.com/questions/583111/cron-expression-difference-between-0-1-1-1-and/583121#583121
+    // cron_parts[0] = year (quartz -- blank otherwise)
+    // cron_parts[1] = day of week
+    // cron_parts[2] = month
+    // cron_parts[3] = day of month
+    // cron_parts[4] = hour
+    // cron_parts[5] = minute
+    // cron_parts[6] = second (quartz)
+    [5, 4, 1].forEach((idx) => {
+      if (cron_parts[idx] === '0/1') {
+        cron_parts[idx] = '*';
+      }
+    });
+    [2, 3].forEach((idx) => {
+      if (cron_parts[idx] === '1/1') {
+        cron_parts[idx] = '*';
+      }
+    });
+
+    // Generate final string
+    this.cron = cron_parts.reverse().join(' ').trim();
   }
 
   private getAmPmHour(hour: number) {
