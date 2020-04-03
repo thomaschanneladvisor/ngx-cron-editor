@@ -11,6 +11,7 @@ import {Days, MonthWeeks, Months, CronFlavor} from './enums';
 export class CronGenComponent implements OnInit, OnChanges {
   private _activeTab: string;
   private _selectedTabIndex: number;
+  private _initializing = true;
 
   @Input() public disabled: boolean;
   @Input() public options: CronOptions;
@@ -21,7 +22,10 @@ export class CronGenComponent implements OnInit, OnChanges {
 
   set cron(value: string) {
     this.localCron = value;
-    this.cronChange.emit(this.localCron);
+
+    if (!this._initializing) {
+      this.cronChange.emit(this.localCron);
+    }
   }
 
   // the name is an Angular convention, @Input variable name + "Change" suffix
@@ -121,6 +125,7 @@ export class CronGenComponent implements OnInit, OnChanges {
     }
 
     this.regenerateCron();
+    this._initializing = false;
   }
 
   public async ngOnChanges(changes: SimpleChanges) {

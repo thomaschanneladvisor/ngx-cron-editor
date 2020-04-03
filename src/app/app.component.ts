@@ -1,14 +1,17 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CronOptions} from './cron-editor/CronOptions';
 import {CronGenComponent} from './cron-editor/cron-editor.component'
 import {CronFlavor} from './cron-editor/enums';
+import {Subscription} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+  private routeQueryParamsSubscription: Subscription;
   public cronExpression = '0 0 1/1 * *';
   public isCronDisabled = false;
   public cronOptions: CronOptions = {
@@ -41,12 +44,28 @@ export class AppComponent {
   @ViewChild('cronEditorDemo', {static: false})
   cronEditorDemo: CronGenComponent;
 
-  constructor() {
+  constructor(
+    private route: ActivatedRoute,
+  ) {
     this.cronFlavorKeys = Object.keys(this.cronFlavorValues);
   }
 
   cronFlavorChange() {
     this.cronEditorDemo.options = this.cronOptions;
     this.cronEditorDemo.regenerateCron();
+  }
+
+  ngOnInit(): void {
+    this.routeQueryParamsSubscription = this.route.queryParams.subscribe(params => {
+      if (params['cron'] && params['cron'].length > 0) {
+        this.cronExpression = params['cron'];
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeQueryParamsSubscription) {
+      this.routeQueryParamsSubscription.unsubscribe();
+    }
   }
 }
