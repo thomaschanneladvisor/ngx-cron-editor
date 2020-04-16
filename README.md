@@ -1,10 +1,10 @@
 Angular Material Design Cron Editor
 ===
 
-A library that helps the user graphically build a CRON expression using Angular 8+. 
+A library that helps the user graphically build a CRON expression using Angular 9+. 
 
 This library has a long history. It is a fork of the  vincentjames501's [angular-cron-gen](https://github.com/vincentjames501/angular-cron-gen) 
-for AngularJS 1.5+ and claudiuconstantin's [cron-editor(https://github.com/claudiuconstantin/cron-editor)] to create an Angular 8+, Material design
+for AngularJS 1.5+ and claudiuconstantin's [cron-editor(https://github.com/claudiuconstantin/cron-editor)] to create an Angular 9+, Material design
 editor.
 
 ![screenshot](docs/screenshot.png)
@@ -84,7 +84,7 @@ export class MyComponent {
 }
 ```
 
-## ZAPinfo Developer Notes
+## ZapInfo Developer Notes
 
 Internally, we use github for package management.
 

@@ -1,19 +1,16 @@
-import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
-import {CronGenComponent} from './cron-editor.component';
-import {TimePickerComponent} from './cron-time-picker.component';
-import {
-  MatTabsModule,
-  MatSelectModule,
-  MatOptionModule,
-  MatFormFieldModule,
-  MatRadioModule,
-  MatCheckboxModule,
-  MatInputModule
-} from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { CronGenComponent } from './cron-editor.component';
+import { TimePickerComponent } from './cron-time-picker.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -21,7 +18,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     FormsModule,
     MatTabsModule,
     MatSelectModule,
-    MatOptionModule,
     MatFormFieldModule,
     MatRadioModule,
     MatCheckboxModule,
